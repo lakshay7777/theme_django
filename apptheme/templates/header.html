@@ -1,0 +1,108 @@
+{% load static %}
+ <!-- header-area start -->
+
+ <header class="header-area">
+    <div class="header-top bg-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <div class="header-top-left">
+                        <p>Always post powefull content.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="header-top-right text-right">
+                        <ul>
+                            <li><a href="#">Facebook</a></li>
+                            <li><a href="#">Twitter</a></li>
+                            <li><a href="#">Behance</a></li>
+                            <li><a href="#">Google+</a></li>
+                            <li><a href="#">Dribbble</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-middle-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7 col-sm-12 d-none d-md-block">
+                    <div class="mainmenu">
+                        <ul id="navigation">
+                            <li class="active"><a href="{% url 'home' %}">Home </a>
+                               <!-- <ul>
+                                    <li class="active"><a href="index.html">Home One </a></li>
+                                    <li><a href="index2.html">Home Two</a></li>
+                                    <li><a href="index3.html">Home Three <i class="fa fa-angle-right pull-right"></i></a>
+                                        <ul>
+                                            <li><a href="javascript:void(0)">Submenu One</a></li>
+                                            <li class="active"><a href="javascript:void(0)">Submenu Two</a></li>
+                                            <li><a href="javascript:void(0)">Submenu Three</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="index4.html">Home Four</a></li>
+                                    <li><a href="index5.html">Home Five</a></li>
+                                </ul>-->
+                            </li>
+                            <li><a href="{% url 'blog' %}">blog </a>
+                                <!-- <ul>
+                                    <li><a href="blog.html">Blog Page</a></li>
+                                    <li><a href="blog-left.html">Blog Left</a></li>
+                                    <li><a href="blog-right.html">Blog Right</a></li>
+                                    <li><a href="javascript:void(0)">Blog Details<i class="fa fa-angle-right pull-right"></i></a>
+                                        <ul>
+                                            <li><a href="blog-details.html">Blog Images</a></li>
+                                            <li><a href="blog-gallary.html">Blog Gallary</a></li>
+                                            <li><a href="blog-video.html">Blog Video</a></li>
+                                            <li><a href="blog-audio.html">Blog Audio</a></li>
+                                        </ul>
+                                    </li>
+                                </ul> -->
+                            </li>
+                            <li><a href="{% url 'about' %}">About</a></li>
+                            <!-- <li><a href="javascript:void(0)">Pages <i class="fa fa-angle-down"></i></a>
+                                <ul>
+                                    <li><a href="about.html">About</a></li>
+                                    <li><a href="faq.html">Faq</a></li>
+                                    <li><a href="404.html">404 Page</a></li>
+                                </ul>
+                            </li> -->
+                            <li><a href="{% url 'contact' %}">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-5 col-sm-10 col-9">
+                    <div class="form-style search-form">
+                        <form action="#">
+                            <input type="text" placeholder="Search here...">
+                            <button><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <div class="d-block d-md-none clear col-sm-2 col-3">
+                    <div class="responsive-menu-wrap floatright"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-bottom-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 col-12">
+                    <div class="logo">
+                        <a href="index.html">
+                               <img src="{% static 'images/logo.png' %}" alt="">
+                           </a>
+                    </div>
+                </div>
+                <div class="col-md-10 col-sm-9 d-none d-md-block">
+                    <div class="header-banner">
+                        <img src="{% static 'images/banner.png' %}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- header-area end -->

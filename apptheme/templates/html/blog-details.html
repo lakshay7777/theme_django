@@ -412,3 +412,291 @@
 </body>
 
 </html>
+
+<!-- 3333333333333333333333333333333333333333333
+
+
+
+
+
+
+
+
+
+
+3333333333333 -->
+{% extends 'base.html' %}
+{% load static %} 
+ 
+{% block content %}
+<div class="col-md-9 col-md-offset-3">
+  <div class="projects">
+    <article class="post">
+      <div class="post-media">
+        <img style="width: 700px;" src="{% if post.feature_image %}{{post.feature_image.url}} {% else %} {% endif %}"  alt="Post" />
+      </div>
+      <div class="post-content">
+        <h2 class="title">{{ post.title }}</h2>
+
+        <!-- Post Details -->
+        <div class="post-details">
+          <a href="#" class="post-date">{{ post.published_date }}</a>
+          <!-- <a href="#" class="post-views">15 views</a> -->
+          <a href="#" class="post-comments">{{ post.comments.count }} comments</a>
+        </div>
+        <!-- End Post Details -->
+
+        <!-- The Content -->
+        <div class="the-content">
+          <p>{{ post.description }}</p>
+          <div class="post-footer">
+            <div class="post-share-wrap">
+              <div class="post-share">
+                <a href="#">
+                  <i class="fa fa-facebook"></i>
+                </a>
+                <a href="#">
+                  <i class="fa fa-twitter"></i>
+                </a>
+                <a href="#">
+                  <i class="fa fa-google-plus"></i>
+                </a>
+                <a href="#">
+                  <i class="fa fa-linkedin"></i>
+                </a>
+                <a href="#">
+                  <i class="fa fa-pinterest"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class="cat">
+              <strong>Category:</strong
+              ><a href="{% url 'category_blog_list' post.category.slug %}" rel="category tag">{{ post.category }}</a>
+            </div>
+            {% for tag in post.tags.all %}
+            <div class="post-tags">
+              <a href="{% url 'tag_blog_list' tag.slug %}" rel="tag">{{ tag }}</a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        &nbsp
+        &nbsp
+        <!-- End The Content -->
+        <div id="respond" class="comment">
+          <h2 class="title">Leave a comment</h2>
+          <form method="post" class="comment-form contact">
+            {% csrf_token %}
+            <div class="contact-item form-name">
+              <input
+                name="name"
+                value=""
+                type="text"
+                placeholder="Your Name *"
+              />
+            </div>
+            <div class="contact-item form-email">
+              <input
+                name="email"
+                value=""
+                type="text"
+                placeholder="Your Email *"
+              />
+            </div>
+            <div class="contact-item field-full form-message">
+              <textarea
+                name="text"
+                placeholder="Your Comment ..."
+                value=""
+              ></textarea>
+            </div>
+            <div class="contact-item form-submit">
+              <input
+                name="submit"
+                type="submit"
+                id="submit"
+                class="submit"
+                value="POST Comment"
+              />
+            </div>
+          </form>
+        </div> 
+
+        
+        <div id="comments">
+          <h2 class="title">{{ post.comments.count }} comments </h2>
+          <div class="comments-inner">
+            <ul class="comment-list">
+              <li class="comment">
+                {% for comment in comment %}
+                <div class="comment-body">
+                  <div
+                    class="comment-avatar image"
+                    style="
+                      background-image: url(static/images/avatar-150px.jpg);
+                    "
+                  >
+                    <img
+                      alt="avatar"
+                      src="{% static 'images/avatar-150px.jpg' %}"
+                    />
+                  </div>
+                  <div class="comment-context">
+                    <div class="comment-head">
+                      <h2 class="title">{{ comment.name }}</h2>
+                      <span class="comment-date">{{ post.timestamp }}</span>
+                    </div>
+                    <div class="comment-content">
+                      <p>
+                        {{ comment.text }}
+                      </p>
+                      <p style="word-wrap: break-word;">{% if comment.parent  %}{{ comment.text }}{% endif %}</p>
+
+                    </div>
+                    <div class="reply">
+                      <span class="comment-reply"
+                        ><a class="comment-reply-link" href="#">Reply</a></span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <ul class="children">
+                  <li class="comment">
+                    <div class="comment-body">
+                      <div
+                        class="comment-avatar image"
+                        style="
+                          background-image: url(static/images/avatar-150px.jpg);
+                        "
+                      >
+                      {% for reply in comment.replies.all %}
+                        <img
+                          alt="avatar"
+                          src="{% static 'images/avatar-150px.jpg' %}"
+                        />
+                      </div>
+                      <div class="comment-context">
+                        <div class="comment-head">
+                          <h2 class="title">{{ reply.name }}</h2>
+                          <span class="comment-date">{{ post.timestamp }}</span>
+                        </div>
+                        <div class="comment-content">
+                          <p>
+                            {{ reply.text }}
+                          </p>
+                        </div>
+                        <div class="reply">
+                          <span class="comment-reply"
+                            ><a class="comment-reply-link" href="#"
+                              >Reply</a
+                            ></span
+                          >
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              
+              <!-- <li class="comment">
+                <div class="comment-body">
+                  <div
+                    class="comment-avatar image"
+                    style="
+                      background-image: url(static/images/avatar-150px.jpg);
+                    "
+                  >
+                    <img
+                      alt="avatar"
+                      src="{% static 'images/avatar-150px.jpg' %}"
+                    />
+                  </div>
+                  <div class="comment-context">
+                    <div class="comment-head">
+                      <h2 class="title">Kendy</h2>
+                      <span class="comment-date">July 6, 2017</span>
+                    </div>
+                    <div class="comment-content">
+                      <p>
+                        Design works within constraints. The Columban monks who
+                        crafted the Book
+                      </p>
+                    </div>
+                    <div class="reply">
+                      <span class="comment-reply"
+                        ><a class="comment-reply-link" href="#">Reply</a></span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="comment">
+                <div class="comment-body">
+                  <div
+                    class="comment-avatar image"
+                    style="
+                      background-image: url(static/images/avatar-150px.jpg);
+                    "
+                  >
+                    <img
+                      alt="avatar"
+                      src="{% static 'images/avatar-150px.jpg' %}"
+                    />
+                  </div>
+                  
+                </div>
+              </li>
+            </ul>
+          </div> -->
+          
+          <!-- Respond -->
+          <div id="respond" class="comment-respond">
+            <h2 class="title">Leave a Reply</h2>
+            <form method="post" class="comment-form contact">
+              {% csrf_token %}
+              <div class="contact-item form-name">
+                <input type="text" name="commentid" value="{{ comment }}" hidden>
+                <input
+                  name="name"
+                  value=""
+                  type="text"
+                  placeholder="Your Name *"
+                />
+              </div>
+              <div class="contact-item form-email">
+                <input
+                  name="email"
+                  value=""
+                  type="text"
+                  placeholder="Your Email *"
+                />
+              </div>
+              <div class="contact-item field-full form-message">
+                <textarea
+                  name="text"
+                  placeholder="Your Comment ..."
+                  value=""
+                ></textarea>
+              </div>
+              <div class="contact-item form-submit">
+                <input
+                  name="submit"
+                  type="submit"
+                  id="submit"
+                  class="submit"
+                  value="POST Comment"
+                />
+              </div>
+            </form>
+          </div> 
+          {% endfor %}
+          <!-- #respond -->
+          <!-- End Respond -->
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+{% endblock %}

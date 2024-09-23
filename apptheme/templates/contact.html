@@ -21,7 +21,21 @@
                                 <input type="text" placeholder="Subject" id="subject" name="subject" required>
                             </div>
                             <div class="col-12">
-                                <textarea class="contact-textarea" placeholder="Message" id="message" name="message" required></textarea>
+                                <textarea class="contact-textarea" placeholder="Message" id="message" name="message"
+                                    required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <div id="captcha-container">
+                                    <span style="border: 2px solid #fff;padding: 10px;border-radius: 5px;"
+                                        id="captcha-text"></span>
+                                    <button style="width: 10px;background-color: #fff;text-decoration: none;"
+                                        type="button" id="refresh-captcha"><i class="fa-solid fa-rotate"
+                                            style="color:#ff9000;"></i></button>
+
+                                    <input type="text" id="captcha-answer" name="captcha-answer" required>
+                                    <input type="hidden" id="captcha-key" name="captcha-key">
+
+                                </div>
                             </div>
                             <div class="col-12">
                                 <button type="submit" id="submit" class="cont-submit btn-contact">SEND MESSAGE</button>
@@ -62,27 +76,44 @@
 {% block extra_js %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function() {
-    $('#contact-form').on('submit', function(e) {
-        e.preventDefault();
-        $.ajax({
-            type: 'POST',
-            url: '{% url "contact" %}',
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    $('#form-messages').html('<div class="alert alert-success">Your message has been sent successfully!</div>');
-                    $('#contact-form')[0].reset();
-                } else {
-                    $('#form-messages').html('<div class="alert alert-danger">There was an error sending your message. Please try again.</div>');
+    $(document).ready(function () {
+        function refreshCaptcha() {
+            $.ajax({
+                url: '{% url "generate_captcha" %}',
+                method: 'GET',
+                success: function (response) {
+                    $('#captcha-text').text(response.captcha_text);
+                    $('#captcha-key').val(response.captcha_key);
                 }
-            },
-            error: function() {
-                $('#form-messages').html('<div class="alert alert-danger">An error occurred. Please try again later.</div>');
-            }
+            });
+        }
+
+        refreshCaptcha();  // Load initial CAPTCHA
+
+        $('#refresh-captcha').click(refreshCaptcha);
+
+        $('#contact-form').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url "contact" %}',
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        $('#form-messages').html('<div class="alert alert-success">Your message has been sent successfully!</div>');
+                        $('#contact-form')[0].reset();
+                        refreshCaptcha();
+                    } else {
+                        $('#form-messages').html('<div class="alert alert-danger">' + (response.error || 'There was an error sending your message. Please try again.') + '</div>');
+                    }
+                },
+                error: function () {
+                    $('#form-messages').html('<div class="alert alert-danger">An error occurred. Please try again later.</div>');
+                }
+            });
         });
     });
-});
 </script>
 {% endblock %}

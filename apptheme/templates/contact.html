@@ -1,87 +1,119 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
+<div class="contact-area ptb-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="contact-form">
+                    <div id="form-messages"></div>
+                    <form id="contact-form">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-12">
+                                <input type="text" placeholder="Name" id="name" name="name" required>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-12">
+                                <input type="email" placeholder="Email" id="email" name="email" required>
+                            </div>
+                            <div class="col-12">
+                                <input type="text" placeholder="Subject" id="subject" name="subject" required>
+                            </div>
+                            <div class="col-12">
+                                <textarea class="contact-textarea" placeholder="Message" id="message" name="message"
+                                    required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <div id="captcha-container">
+                                    <span style="border: 2px solid #fff;padding: 10px;border-radius: 5px;"
+                                        id="captcha-text"></span>
+                                    <button style="width: 10px;background-color: #fff;text-decoration: none;"
+                                        type="button" id="refresh-captcha"><i class="fa-solid fa-rotate"
+                                            style="color:#ff9000;"></i></button>
 
+                                    <input type="text" id="captcha-answer" name="captcha-answer" required>
+                                    <input type="hidden" id="captcha-key" name="captcha-key">
 
-    
-    <!-- breadcumb-area start -->
-    <div class="breadcumb-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="breadcumb-wrap text-center">
-                        <h2>Contact Us</h2>
-                        <ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li>-</li>
-                            <li class="active">Contact</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- breadcumb-area end -->
-    <!-- contact-area start -->
-    <div class="contact-area ptb-80">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="contact-form">
-                        <div class="cf-msg"></div>
-                        <form action="mail.php" method="post" id="cf">
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6 col-12">
-                                    <input type="text" placeholder="Name" id="fname" name="fname">
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-12">
-                                    <input type="text" placeholder="Email" id="email" name="email">
-                                </div>
-                                <div class="col-12">
-                                    <input type="text" placeholder="Subject" id="subject" name="subject">
-                                </div>
-                                <div class="col-12">
-                                    <textarea class="contact-textarea" placeholder="Message" id="msg" name="msg"></textarea>
-                                </div>
-                                <div class="col-12">
-                                    <button id="submit" class="cont-submit btn-contact" name="submit">SEND MESSAGE</button>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="contact-wrap">
-                        <ul>
-                            <li>
-                                <i class="fa fa-home"></i> Address:
-                                <p>1234, Contrary to popular Sed ut perspiciatis unde 1234</p>
-                            </li>
-                            <li>
-                                <i class="fa fa-phone"></i> Email address:
-                                <p>
-                                    <span>info@yoursite.com </span>
-                                    <span>info@yoursite.com </span>
-                                </p>
-                            </li>
-                            <li>
-                                <i class="fa fa-envelope"></i> phone number:
-                                <p>
-                                    <span>+0123456789</span>
-                                    <span>+1234567890</span>
-                                </p>
-                            </li>
-                        </ul>
-                    </div>
+                            <div class="col-12">
+                                <button type="submit" id="submit" class="cont-submit btn-contact">SEND MESSAGE</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <div id="googleMap"></div>
+            <div class="col-md-4">
+                <div class="contact-wrap">
+                    <ul>
+                        <li>
+                            <i class="fa fa-home"></i> Address:
+                            <p>1234, Contrary to popular Sed ut perspiciatis unde 1234</p>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope"></i> Email address:
+                            <p>
+                                <span>info@yoursite.com</span>
+                                <span>info@yoursite.com</span>
+                            </p>
+                        </li>
+                        <li>
+                            <i class="fa fa-phone"></i> Phone number:
+                            <p>
+                                <span>+0123456789</span>
+                                <span>+1234567890</span>
+                            </p>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
-    <!-- contact-area end -->
-    
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        function refreshCaptcha() {
+            $.ajax({
+                url: '{% url "generate_captcha" %}',
+                method: 'GET',
+                success: function (response) {
+                    $('#captcha-text').text(response.captcha_text);
+                    $('#captcha-key').val(response.captcha_key);
+                }
+            });
+        }
+
+        refreshCaptcha();  // Load initial CAPTCHA
+
+        $('#refresh-captcha').click(refreshCaptcha);
+
+        $('#contact-form').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url "contact" %}',
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        $('#form-messages').html('<div class="alert alert-success">Your message has been sent successfully!</div>');
+                        $('#contact-form')[0].reset();
+                        refreshCaptcha();
+                    } else {
+                        $('#form-messages').html('<div class="alert alert-danger">' + (response.error || 'There was an error sending your message. Please try again.') + '</div>');
+                    }
+                },
+                error: function () {
+                    $('#form-messages').html('<div class="alert alert-danger">An error occurred. Please try again later.</div>');
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

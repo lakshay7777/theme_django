@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- breadcumb-area start -->
+<div class="breadcumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcumb-wrap text-center">
+                    <h2>Blog Details</h2>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li>-</li>
+                        <li class="active">Blog Image</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcumb-area end -->
+<!-- .blog-details.html-area start -->
+
+<div class="blog-details-area ptb-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="blog-wrapper">
+                    <div class="post-media">
+                        <img style="width:100%;"
+                            src="{% if post.feature_image %}{{post.feature_image.url}} {% else %} {% endif %}"
+                            alt="Post" />
+                        <strong>
+                            <p><a href="#">{{ post.title }}</a></p>
+                        </strong>
+                        <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati nulla veniam autem veritatis, adipisci officia? Tempora necessitatibus, iusto minima maxime ipsum quae dolore repellat quaerat.</p> -->
+                        <p>{{ post.description }}</p>
+                    </div>
+                    <div class="blog-meta">
+                        <a href="#" class="post-date">{{ post.published_date }}</a>
+                        
+                        <a href="#" class="post-date">{{ post.text }}</a>
+                    </div>
+                    <ul class="socil-media">
+                        <li><a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="https://x.com/"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="https://www.linkedin.com/"><i class="fa fa-linkedin"></i></a></li>
+                        <li><a href="https://www.skype.com/"><i class="fa fa-skype"></i></a></li>
+                    </ul>
+                    <p>{{ post.text|linebreaksbr }}</p>
+                    <br>
+                    <p><strong>Tags:-</strong>
+                        {% for tag in post.tags.all %}
+                        <a style="text-decoration: none;" href="{% url 'tag_blog_list' slug=tag.slug %}"> {{tag.name}}</a>
+
+                        {% endfor %}
+                    </p>
+                    <br>
+                    <p> <strong>Category:-</strong> 
+                        {% for category in post.category.all %}
+                        <a style="text-decoration: none;" href="{% url 'category_blog_list' post.category.slug %}">{{ post.category.name }}</a>
+
+                        {% endfor %}
+                    </p>
+
+                    
+                    <div class="comment-main">
+                        
+                        <h1 class="blog-title"><a href="#" class="post-comments"  style="font-size: large;">{{ post.comments.count }} comments</a></h1>
+                        <ol class="comments">
+                            <li class="comment even thread-even depth-1" id="comment-1">
+                                <div id="div-comment-1" class="comment-wrap">
+                                    <div class="comment-theme">
+                                        <div class="comment-image">
+                                            <img src="{% static 'images/comment/1.jpg' %}" alt="Jhon">
+                                        </div>
+                                    </div>
+                                    {% for comment in comment %}
+                                    <div class="comment-main-area">
+                                        <div class="comment-wrapper">
+                                            <div class="sewl-comments-meta">
+                                                <h4>{{ comment.name }}</h4>
+                                                
+                                            </div>
+                                            <div class="comment-area">
+                                                <p>{{ comment.text }}</p>
+                                                
+                                                <div class="comments-reply">
+                                                    <a rel="nofollow" class="comment-reply-link" href="#0"
+                                                        onclick="return addComment.moveForm"( &quot;comment-1&quot;, &quot;1&quot;, &quot;respond&quot;, &quot;1&quot; )"
+                                                        aria-label="Reply to Mr WordPress"><span
+                                                            class="comment-reply-link"><i class="fa fa-reply"></i>
+                                                            Reply</span></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                               
+                            </li>
+                        </ol>
+                    </div>
+                    <div id="respond" class="sewl-comment-form comment-respond">
+                        
+                        <h3 id="reply-title" class="blog-title">Leave a comment</h3>
+                        
+                        <form novalidate="" method="post" id="commentform" class="comment-form" action="#0">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="sewl-form-inputs no-padding-left">
+                                        <div class="row">
+                                            <div class="col-md-6 col-12">
+                                                <input id="name" name="name" value="" tabindex="2" placeholder="Name"
+                                                    type="text">
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <input id="email" name="email" value="" tabindex="3" placeholder="Email"
+                                                    type="email">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="sewl-form-textarea no-padding-right">
+                                        <textarea id="text" name="text" tabindex="4" rows="3" cols="30"
+                                            placeholder="Write Your Comments..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-submit">
+                                        <input name="submit" id="submit" value="Post Comment" type="submit">
+                                        <!-- <input name="comment_post_ID" value="1" id="comment_post_ID" type="hidden"> -->
+                                        <input name="comment_parent" id="comment_parent" value="0" type="hidden">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- .blog-details.html-area end -->
+
+{% endblock %}

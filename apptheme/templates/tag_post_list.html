@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>{{ tags.name }}</title>{% endblock %}
+
+{% block content %}
+<h1>Tags:-{{ tags.name }}</h1>
+
+{% for post in posts %}
+<div class="col-md-9 col-md-offset-3">
+  <div class="projects">
+    <article class="post">
+      <div class="post-media">
+        <a href="{% url 'blog_details' post.slug %}">
+          <img style="width: 700px;" src="{% if post.feature_image %}{{post.feature_image.url}} {% else %} {% endif %}" alt="Post" />
+        </a>
+      </div>
+      <div class="post-content">
+        <h2 class="title">
+          <a href="{% url 'blog_details' post.slug %}">{{ post.title }}</a>
+        </h2>
+
+        <!-- Post Details -->
+        <div class="post-details">
+          <a href="#" class="post-date">{{ post.published_date }}</a>
+          <!-- <a href="#" class="post-views">15 views</a> -->
+          <a href="#" class="post-comments">{{ post.comments.count }} comments</a>
+        </div>
+        <!-- End Post Details -->
+
+        <!-- The Content -->
+        <div class="the-excerpt">
+          <p>
+            {{ post.description|truncatewords:'50' }}.
+          </p>
+        </div>
+        <!-- End The Content -->
+      </div>
+    </article>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}
